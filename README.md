@@ -242,9 +242,9 @@ skill-exchange/
 
 ## 🔐 Akun Default (Setelah Seeding)
 
-| Role  | Email             | Password |
-| ----- | ----------------- | -------- |
-| Admin | admin@example.com | password |
+| Role  | Email                    | Password |
+| ----- | ------------------------ | -------- |
+| Admin | admin@skillexchange.test | password |
 
 ---
 
