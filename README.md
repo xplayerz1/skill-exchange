@@ -166,7 +166,7 @@ Manajemen akun pengguna oleh administrator.
 
 -   **PHP >= 8.2.12** (Tested and compatible with PHP 8.2.12+)
 -   Composer (latest version)
--   Node.js & NPM (Node 16+ recommended)
+-   MySQL atau SQLite
 -   Git
 
 ### Langkah Instalasi
@@ -174,25 +174,25 @@ Manajemen akun pengguna oleh administrator.
 #### 1. Clone Repository
 
 ```bash
-git clone https://github.com/USERNAME/skill-exchange.git
+git clone https://github.com/xplayerz1/skill-exchange.git
 cd skill-exchange
 ```
 
 #### 2. Install Dependencies
 
 ```bash
-# Install PHP dependencies
 composer install
-
-# Install Node.js dependencies
-npm install
 ```
 
-#### 3. Konfigurasi Environment
+#### 3. Setup Environment
 
 ```bash
 # Copy file environment
-cp .env.example .env
+# Windows PowerShell:
+Copy-Item .env.example .env
+
+# Linux/Mac:
+# cp .env.example .env
 
 # Generate application key
 php artisan key:generate
@@ -239,23 +239,20 @@ php artisan migrate
 php artisan db:seed
 ```
 
-#### 6. Build Assets
-
-```bash
-# Development
-npm run dev
-
-# Atau untuk production
-npm run build
-```
-
-#### 7. Jalankan Aplikasi
+#### 6. Jalankan Aplikasi
 
 ```bash
 php artisan serve
 ```
 
-Aplikasi akan berjalan di: **http://localhost:8000**
+**Aplikasi berjalan di:** http://localhost:8000
+
+**Login dengan akun default** (jika sudah run seeder):
+
+-   Email: `admin@example.com`
+-   Password: `password`
+
+Atau daftar akun baru di: http://localhost:8000/register
 
 ---
 
@@ -284,7 +281,6 @@ skill-exchange/
 | Role  | Email             | Password |
 | ----- | ----------------- | -------- |
 | Admin | admin@example.com | password |
-| User  | user@example.com  | password |
 
 > ⚠️ **Catatan**: Ubah password default setelah instalasi untuk keamanan.
 
@@ -304,7 +300,3 @@ Aplikasi ini juga menyediakan REST API untuk akses data secara programmatic:
 | `/api/topics`         | GET    | Daftar semua topics         |
 
 ---
-
-## 📝 License
-
-This project is licensed under the MIT License.
