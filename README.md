@@ -246,7 +246,6 @@ skill-exchange/
 | ----- | ----------------- | -------- |
 | Admin | admin@example.com | password |
 
-> ⚠️ **Catatan**: Ubah password default setelah instalasi untuk keamanan.
 
 ---
 
