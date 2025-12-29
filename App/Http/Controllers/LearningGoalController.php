@@ -26,7 +26,7 @@ class LearningGoalController extends Controller
             'description' => 'nullable|string',
             'skill_id' => 'nullable|exists:skills,id',
             'topic_id' => 'nullable|exists:topics,id',
-            'target_date' => 'nullable|date|after:today',
+            'target_date' => 'nullable|date',
             'status' => 'required|in:not_started,in_progress,completed',
         ]);
 

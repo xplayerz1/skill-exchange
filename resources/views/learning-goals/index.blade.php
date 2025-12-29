@@ -169,7 +169,7 @@
 
                 <div class="mb-4">
                     <label class="block text-gray-700 text-sm font-bold mb-2">Target Date</label>
-                    <input type="date" name="target_date" id="goalDate" min="{{ date('Y-m-d') }}" class="shadow border rounded w-full py-2 px-3 text-gray-700">
+                    <input type="date" name="target_date" id="goalDate" class="shadow border rounded w-full py-2 px-3 text-gray-700">
                 </div>
 
                 <div class="mb-4">
