@@ -14,8 +14,10 @@ class PortfolioController extends Controller
     public function index()
     {
         $targetUser = Auth::user();
+        $targetUser->load('userSkills'); // Load personal skills for dropdown
+        
         $portfolios = Portfolio::where('user_id', $targetUser->id)
-                               ->with('skills')
+                               ->with(['skills', 'userSkills'])
                                ->latest()
                                ->get();
         $skills = Skill::orderBy('name')->get();
@@ -29,9 +31,15 @@ class PortfolioController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'link' => 'nullable|url',
-            'skills' => 'required|array|min:1',
+            'skills' => 'nullable|array',
             'skills.*' => 'exists:skills,id',
+            'user_skills' => 'nullable|array',
+            'user_skills.*' => 'exists:user_skills,id',
         ]);
+        
+        if (empty($request->skills) && empty($request->user_skills)) {
+            return back()->withErrors(['skills' => 'Please select at least one skill (Global or Personal).']);
+        }
 
         $portfolio = Portfolio::create([
             'user_id' => Auth::id(),
@@ -40,7 +48,13 @@ class PortfolioController extends Controller
             'link' => $request->link,
         ]);
 
-        $portfolio->skills()->attach($request->skills);
+        if ($request->has('skills')) {
+            $portfolio->skills()->attach($request->skills);
+        }
+
+        if ($request->has('user_skills')) {
+            $portfolio->userSkills()->attach($request->user_skills);
+        }
 
         return redirect()->route('portfolio.index')->with('success', 'Portfolio added successfully!');
     }
@@ -56,9 +70,15 @@ class PortfolioController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'link' => 'nullable|url',
-            'skills' => 'required|array|min:1',
+            'skills' => 'nullable|array',
             'skills.*' => 'exists:skills,id',
+            'user_skills' => 'nullable|array',
+            'user_skills.*' => 'exists:user_skills,id',
         ]);
+
+        if (empty($request->skills) && empty($request->user_skills)) {
+            return back()->withErrors(['skills' => 'Please select at least one skill (Global or Personal).']);
+        }
 
         $portfolio->update([
             'title' => $request->title,
@@ -66,7 +86,19 @@ class PortfolioController extends Controller
             'link' => $request->link,
         ]); 
 
-        $portfolio->skills()->sync($request->skills); 
+        // Sync Global Skills
+        if ($request->has('skills')) {
+            $portfolio->skills()->sync($request->skills);
+        } else {
+            $portfolio->skills()->detach();
+        }
+
+        // Sync Personal User Skills
+        if ($request->has('user_skills')) {
+            $portfolio->userSkills()->sync($request->user_skills);
+        } else {
+            $portfolio->userSkills()->detach();
+        } 
 
         return redirect()->route('portfolio.index')->with('success', 'Portfolio updated successfully!');
     }

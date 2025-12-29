@@ -26,4 +26,9 @@ class Portfolio extends Model
     {
         return $this->belongsToMany(Skill::class);
     }
+
+    public function userSkills()
+    {
+        return $this->belongsToMany(UserSkill::class, 'portfolio_user_skill');
+    }
 }

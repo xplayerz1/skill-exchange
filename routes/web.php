@@ -92,6 +92,7 @@ Route::middleware('auth')->group(function () {
     // Skill Management
     Route::post('/profile/skills', [ProfileController::class, 'attachSkill'])->name('profile.skills.attach');
     Route::delete('/profile/skills/{skill}', [ProfileController::class, 'detachSkill'])->name('profile.skills.detach');
+    Route::delete('/profile/user-skills/{userSkill}', [ProfileController::class, 'detachUserSkill'])->name('profile.user-skills.detach');
     
     // Public User Profile (View other users' portfolios)
     Route::get('/user/{user}', [ProfileController::class, 'show'])->name('user.profile');

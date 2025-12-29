@@ -57,27 +57,63 @@
             </div>
         @endif
 
-        @if($targetUser->skills->count() > 0)
-            <div class="flex flex-wrap gap-3">
-                @foreach($targetUser->skills as $skill)
-                    <div class="group relative bg-blue-50 border border-blue-100 px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-blue-100 transition-all">
-                        <div>
-                            <p class="text-sm font-semibold text-blue-900 leading-tight">{{ $skill->name }}</p>
-                            <p class="text-[10px] text-blue-600 uppercase tracking-wider font-bold">{{ $skill->category }}</p>
-                        </div>
-                        @if($isOwnProfile)
-                            <form action="{{ route('profile.skills.detach', $skill->id) }}" method="POST" class="ml-2">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="text-blue-300 hover:text-red-500 transition-colors" title="Remove Skill">
-                                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
-                                    </svg>
-                                </button>
-                            </form>
-                        @endif
+        @if($targetUser->skills->count() > 0 || $targetUser->userSkills->count() > 0)
+            <div class="flex flex-col gap-6">
+                <!-- Global Skills -->
+                @if($targetUser->skills->count() > 0)
+                <div>
+                    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Global Skills</h3>
+                    <div class="flex flex-wrap gap-3">
+                        @foreach($targetUser->skills as $skill)
+                            <div class="group relative bg-blue-50 border border-blue-100 px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-blue-100 transition-all">
+                                <div>
+                                    <p class="text-sm font-semibold text-blue-900 leading-tight">{{ $skill->name }}</p>
+                                    <p class="text-[10px] text-blue-600 uppercase tracking-wider font-bold">{{ $skill->category }}</p>
+                                </div>
+                                @if($isOwnProfile)
+                                    <form action="{{ route('profile.skills.detach', $skill->id) }}" method="POST" class="ml-2">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-blue-300 hover:text-red-500 transition-colors" title="Remove Skill">
+                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        @endforeach
                     </div>
-                @endforeach
+                </div>
+                @endif
+                
+                <!-- Personal Skills -->
+                @if($targetUser->userSkills->count() > 0)
+                <div>
+                    <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-3">Personal Skills</h3>
+                    <div class="flex flex-wrap gap-3">
+                        @foreach($targetUser->userSkills as $skill)
+                            <div class="group relative bg-purple-50 border border-purple-100 px-4 py-2 rounded-xl flex items-center gap-2 hover:bg-purple-100 transition-all">
+                                <div>
+                                    <p class="text-sm font-semibold text-purple-900 leading-tight">{{ $skill->name }}</p>
+                                    <p class="text-[10px] text-purple-600 uppercase tracking-wider font-bold">Personal</p>
+                                </div>
+                                @if($isOwnProfile)
+                                    <form action="{{ route('profile.user-skills.detach', $skill->id) }}" method="POST" class="ml-2">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-purple-300 hover:text-red-500 transition-colors" title="Remove Skill">
+                                            <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+                                            </svg>
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+                @endif
             </div>
         @else
             <p class="text-gray-500 italic">No specific skills listed yet.</p>
@@ -123,8 +159,15 @@
                         <p class="text-gray-700 text-sm mb-4 line-clamp-3">{{ $portfolio->description }}</p>
 
                         <div class="flex flex-wrap gap-2 mb-4">
+                            <!-- Global Skills -->
                             @foreach($portfolio->skills as $skill)
                                 <span class="bg-blue-50 text-blue-700 text-xs font-medium px-3 py-1 rounded-full">
+                                    {{ $skill->name }}
+                                </span>
+                            @endforeach
+                            <!-- Personal Skills -->
+                            @foreach($portfolio->userSkills as $skill)
+                                <span class="bg-purple-50 text-purple-700 text-xs font-medium px-3 py-1 rounded-full border border-purple-100">
                                     {{ $skill->name }}
                                 </span>
                             @endforeach
@@ -207,6 +250,10 @@
                     Skills Used <span class="text-red-500">*</span> <span class="text-gray-500 font-normal">(Select at least one)</span>
                 </label>
                 <div id="createPortfolioSkillsContainer" class="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-64 overflow-y-auto p-4 border border-gray-300 rounded-xl bg-gray-50">
+                    <!-- Global Skills -->
+                    <div class="col-span-full mb-2">
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Global Skills</h4>
+                    </div>
                     @foreach($skills as $skill)
                     <label class="flex items-start hover:bg-white p-2 rounded-lg cursor-pointer transition-all group">
                         <input type="checkbox" name="skills[]" value="{{ $skill->id }}" 
@@ -217,6 +264,23 @@
                         </div>
                     </label>
                     @endforeach
+
+                    <!-- Personal Skills -->
+                    @if(Auth::user()->userSkills->count() > 0)
+                    <div class="col-span-full mt-4 mb-2">
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">My Personal Skills</h4>
+                    </div>
+                    @foreach(Auth::user()->userSkills as $skill)
+                    <label class="flex items-start hover:bg-white p-2 rounded-lg cursor-pointer transition-all group border border-purple-100">
+                        <input type="checkbox" name="user_skills[]" value="{{ $skill->id }}" 
+                               class="create-portfolio-skills-checkbox mt-0.5 mr-3 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                        <div class="flex-1">
+                            <span class="text-sm font-medium text-gray-900 group-hover:text-purple-600">{{ $skill->name }}</span>
+                            <br><span class="text-xs text-purple-500 font-medium">(Personal)</span>
+                        </div>
+                    </label>
+                    @endforeach
+                    @endif
                 </div>
                 <p id="createPortfolioSkillsError" class="hidden mt-2 text-sm text-red-600">
                     ⚠️ Please select at least one skill
@@ -278,16 +342,37 @@
                     Skills Used <span class="text-red-500">*</span> <span class="text-gray-500 font-normal">(Select at least one)</span>
                 </label>
                 <div id="editPortfolioSkillsContainer" class="grid grid-cols-2 md:grid-cols-3 gap-3 max-h-64 overflow-y-auto p-4 border border-gray-300 rounded-xl bg-gray-50">
+                    <!-- Global Skills -->
+                    <div class="col-span-full mb-2">
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">Global Skills</h4>
+                    </div>
                     @foreach($skills as $skill)
                     <label class="flex items-start hover:bg-white p-2 rounded-lg cursor-pointer transition-all group">
                         <input type="checkbox" name="skills[]" value="{{ $skill->id }}" 
-                               class="edit-portfolio-skills-checkbox mt-0.5 mr-3 w-4 h-4 text-linkedin-blue border-gray-300 rounded focus:ring-linkedin-blue">
+                               class="edit-portfolio-skills-checkbox edit-global-skill mt-0.5 mr-3 w-4 h-4 text-linkedin-blue border-gray-300 rounded focus:ring-linkedin-blue">
                         <div class="flex-1">
                             <span class="text-sm font-medium text-gray-900 group-hover:text-linkedin-blue">{{ $skill->name }}</span>
                             <br><span class="text-xs text-gray-500">({{ $skill->category }})</span>
                         </div>
                     </label>
                     @endforeach
+
+                    <!-- Personal Skills -->
+                    @if(Auth::user()->userSkills->count() > 0)
+                    <div class="col-span-full mt-4 mb-2">
+                        <h4 class="text-xs font-bold text-gray-500 uppercase tracking-wider">My Personal Skills</h4>
+                    </div>
+                    @foreach(Auth::user()->userSkills as $skill)
+                    <label class="flex items-start hover:bg-white p-2 rounded-lg cursor-pointer transition-all group border border-purple-100">
+                        <input type="checkbox" name="user_skills[]" value="{{ $skill->id }}" 
+                               class="edit-portfolio-skills-checkbox edit-personal-skill mt-0.5 mr-3 w-4 h-4 text-purple-600 border-gray-300 rounded focus:ring-purple-500">
+                        <div class="flex-1">
+                            <span class="text-sm font-medium text-gray-900 group-hover:text-purple-600">{{ $skill->name }}</span>
+                            <br><span class="text-xs text-purple-500 font-medium">(Personal)</span>
+                        </div>
+                    </label>
+                    @endforeach
+                    @endif
                 </div>
                 <p id="editPortfolioSkillsError" class="hidden mt-2 text-sm text-red-600">
                     ⚠️ Please select at least one skill
@@ -389,14 +474,22 @@ function editPortfolio(portfolioId) {
             cb.checked = false;
         });
         
-        // Check the skills that belong to this portfolio
-        const portfolioSkillIds = portfolio.skills.map(s => s.id);
-        portfolioSkillIds.forEach(skillId => {
-            const checkbox = document.querySelector(`.edit-portfolio-skills-checkbox[value="${skillId}"]`);
-            if (checkbox) {
-                checkbox.checked = true;
-            }
-        });
+        // Check Global Skills
+        if (portfolio.skills) {
+            portfolio.skills.forEach(skill => {
+                const checkbox = document.querySelector(`.edit-global-skill[value="${skill.id}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
+
+        // Check Personal User Skills (handle both camelCase and snake_case just in case)
+        const userSkills = portfolio.user_skills || portfolio.userSkills;
+        if (userSkills) {
+            userSkills.forEach(skill => {
+                const checkbox = document.querySelector(`.edit-personal-skill[value="${skill.id}"]`);
+                if (checkbox) checkbox.checked = true;
+            });
+        }
         
         // Set form action
         document.getElementById('editPortfolioForm').action = `/portfolio/${portfolioId}`;
