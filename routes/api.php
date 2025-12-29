@@ -7,7 +7,6 @@ use App\Http\Controllers\Api\PostApiController;
 use App\Http\Controllers\Api\PortfolioApiController;
 use App\Http\Controllers\Api\ProfileApiController;
 use App\Http\Controllers\Api\WarningController;
-use App\Http\Controllers\Api\ScheduleApiController;
 
 Route::post('/register', [AuthApiController::class, 'register']);
 Route::post('/login', [AuthApiController::class, 'login']);
@@ -27,7 +26,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::apiResource('posts', PostApiController::class)->except(['index', 'show']); 
     Route::apiResource('portfolios', PortfolioApiController::class)->except(['index', 'show']); 
-    Route::apiResource('schedules', ScheduleApiController::class); 
     Route::apiResource('warnings', WarningController::class); 
 
     Route::get('/profile', [ProfileApiController::class, 'show']);

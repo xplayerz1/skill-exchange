@@ -321,14 +321,4 @@ class AdminController extends Controller
             return back()->with('error', 'Failed to delete topic: ' . $e->getMessage());
         }
     }
-
-    // Schedule Management (Read-only for Admin)
-    public function schedules()
-    {
-        $schedules = \App\Models\Schedule::with(['user1', 'user2', 'topic'])
-            ->orderBy('scheduled_at', 'desc')
-            ->paginate(20);
-        
-        return view('admin.schedules.index', compact('schedules'));
-    }
 }
