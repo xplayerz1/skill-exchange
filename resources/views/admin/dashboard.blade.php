@@ -112,7 +112,7 @@
             </div>
         </div>
 
-        <!-- Portfolios -->
+        <!-- Portfolio Items -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <div class="flex items-center">
                 <div class="bg-pink-100 rounded-full p-3 mr-4">
@@ -121,7 +121,7 @@
                 <div>
                     <p class="text-sm font-medium text-gray-600">Portfolio Items</p>
                     <p class="text-2xl font-bold text-gray-900">{{ $totalPortfolios }}</p>
-                    <p class="text-xs text-gray-500">Total portfolio</p>
+                    <p class="text-xs text-gray-500">Total portfolios</p>
                 </div>
             </div>
         </div>

@@ -218,30 +218,7 @@ class AdminController extends Controller
         }
     }
 
-    public function portfolios()
-    {
-        try {
-            $portfolios = Portfolio::with('user')->latest()->paginate(20);
-            return view('admin.portfolios.index', compact('portfolios'));
-        } catch (\Exception $e) {
-            \Log::error('Error fetching portfolios: ' . $e->getMessage());
-            return back()->with('error', 'Failed to load portfolio list: ' . $e->getMessage());
-        }
-    }
 
-    public function destroyPortfolio(Portfolio $portfolio)
-    {
-        try {
-            $portfolio->delete();
-            return redirect()->route('admin.portfolios.index')->with('success', 'Portfolio deleted successfully.');
-        } catch (\Exception $e) {
-            $portfolio->delete(); 
-            return redirect()->route('admin.portfolios.index')->with('success', 'Portfolio deleted successfully.');
-        } catch (\Exception $e) {
-            \Log::error('Error deleting portfolio: ' . $e->getMessage(), ['portfolio_id' => $portfolio->id]);
-            return back()->with('error', 'Failed to delete portfolio: ' . $e->getMessage());
-        }
-    }
 
     public function topics()
     {

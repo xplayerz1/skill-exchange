@@ -114,10 +114,6 @@ Route::prefix('admin')->name('admin.')->middleware(['auth', 'role:admin'])->grou
     Route::get('/posts', [AdminController::class, 'posts'])->name('posts.index');
     Route::delete('/posts/{post}', [AdminController::class, 'destroyPost'])->name('posts.destroy');
 
-    // Portfolios
-    Route::get('/portfolios', [AdminController::class, 'portfolios'])->name('portfolios.index');
-    Route::delete('/portfolios/{portfolio}', [AdminController::class, 'destroyPortfolio'])->name('portfolios.destroy');
-
     // Topics
     Route::get('/topics', [AdminController::class, 'topics'])->name('topics.index');
     Route::get('/topics/create', [AdminController::class, 'createTopicForm'])->name('topics.create');
